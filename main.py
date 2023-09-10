@@ -50,13 +50,18 @@ def login():
     return redirect(url_for("dashboard.dashboard"))
 
 
-@add_note_from_form_blueprint.route('/note', methods=['POST'])
+@add_note_from_form_blueprint.route('/adding-note', methods=['GET', 'POST'])
 def add_note_from_form():
-    content_note = request.form['content_note']
-    note = Notes(content=content_note)
-    db.session.add(note)
-    db.session.commit()
-    return redirect('/notes')
+    if request.method == 'GET':
+        return render_template('adding_note.html')
+
+    if request.method == 'POST':
+        content = request.form['content']
+        note = Notes(content=content)
+        db.session.add(note)
+        db.session.commit()
+        return redirect('/notes')
+
 
 # @adding_note_blueprint.route('/note', method=['POST'])
 # def adding_note():
